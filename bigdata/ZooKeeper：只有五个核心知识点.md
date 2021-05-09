@@ -294,11 +294,13 @@ Zookeeper客户端是异步的哦！需要引入CountDownLatch 来确保连接�
 开源的zk客户端，在原生API基础上封装，apache顶级项目。是Netflix公司开源的一套Zookeeper客户端框架。了解过Zookeeper原生API都会清楚其复杂度。Curator帮助我们在其基础上进行封装、实现一些开发细节，包括接连重连、反复注册Watcher和NodeExistsException等。目前已经作为Apache的顶级项目出现，是最流行的Zookeeper客户端之一。
 
 ##### 5.2.4. Zookeeper图形化客户端工具
+
 工具名叫[ZooInspector](https://www.cnblogs.com/weiyiming007/p/11951591.html)，百度安装教程即可。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010820381323.png)
 
 ### 5.3 ACL 权限控制机制
+
 [ACL](https://blog.csdn.net/u012988901/article/details/83388419)全称为Access Control List 即访问控制列表，用于控制资源的访问权限。zookeeper利用ACL策略控制节点的访问权限，如节点数据读写、节点创建、节点删除、读取子节点列表、设置节点权限等。
 
 ### 5.4 Zookeeper使用注意事项

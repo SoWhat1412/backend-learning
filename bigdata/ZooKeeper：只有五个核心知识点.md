@@ -290,16 +290,19 @@ Zookeeper客户端是异步的哦！需要引入CountDownLatch 来确保连接�
 > 优化二、 将一次性watcher包装为持久watcher。
 
 ##### 5.2.3. Curator
+
 开源的zk客户端，在原生API基础上封装，apache顶级项目。是Netflix公司开源的一套Zookeeper客户端框架。了解过Zookeeper原生API都会清楚其复杂度。Curator帮助我们在其基础上进行封装、实现一些开发细节，包括接连重连、反复注册Watcher和NodeExistsException等。目前已经作为Apache的顶级项目出现，是最流行的Zookeeper客户端之一。
 
 ##### 5.2.4. Zookeeper图形化客户端工具
 工具名叫[ZooInspector](https://www.cnblogs.com/weiyiming007/p/11951591.html)，百度安装教程即可。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010820381323.png)
 
 ### 5.3 ACL 权限控制机制
 [ACL](https://blog.csdn.net/u012988901/article/details/83388419)全称为Access Control List 即访问控制列表，用于控制资源的访问权限。zookeeper利用ACL策略控制节点的访问权限，如节点数据读写、节点创建、节点删除、读取子节点列表、设置节点权限等。
 
 ### 5.4 Zookeeper使用注意事项
+
 1. 集群中机器的数量并不是越多越好，一个写操作需要半数以上的节点ack，所以集群节点数越多，整个集群可以抗挂点的节点数越多(越可靠)，但是吞吐量越差。集群的数量必须为奇数。
 2. zk是基于内存进行读写操作的，有时候会进行消息广播，因此不建议在节点存取容量比较大的数据。
 3. dataDir目录、dataLogDir两个目录会随着时间推移变得庞大，容易造成硬盘满了。建议自己编写或使用自带的脚本保留最新的n个文件。

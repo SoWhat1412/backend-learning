@@ -198,7 +198,14 @@ alter table poi_spatial add index lngindex(lng);
 3. [判断](https://www.geeksforgeeks.org/how-to-check-if-a-given-point-lies-inside-a-polygon/) 一个IP坐标是否在中国地图内，核心思想就是看点到线上的交点看是否在右边。具体看参考文档实战代码。
 
 # 参考
-[Java实现GPS范围查找](https://blog.csdn.net/pavel101/article/details/83585431)
-[浙大大佬通俗说GPS](https://www.cnblogs.com/LBSer/p/3403933.html)
-[SpringBoot+RedisGeo实战](https://download.csdn.net/download/qq_31821675/12630443)
+[Java实现GPS范围查找
+
+[](https://blog.csdn.net/pavel101/article/details/83585431)
+[浙大大佬通俗说GPS
+
+[](https://www.cnblogs.com/LBSer/p/3403933.html)
+[SpringBoot+RedisGeo实战
+
+[](https://download.csdn.net/download/qq_31821675/12630443)
 [Neo4j自带距离计算](http://we-yun.com/apoc/index34.html#_calculating_distance_between_locations)
+

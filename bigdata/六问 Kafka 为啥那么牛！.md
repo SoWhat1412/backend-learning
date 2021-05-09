@@ -1,4 +1,4 @@
-﻿![](https://img-blog.csdnimg.cn/20210122214438783.png)
+
 ![Kafka架构](https://img-blog.csdnimg.cn/2021050917414331.png)
 
 # 1 Kafka 简介
@@ -69,8 +69,11 @@ producer采用  push 模式将消息发布到 broker，每条消息都被 append
 ##### 2.2.1  Partition 简介
 消息发送时都被发送到一个topic，其本质就是一个目录，而topic是由一些 分区日志 Partition Logs 组成，其组织结构如下图所示：
 ![Partition发生](https://img-blog.csdnimg.cn/20210121152949639.png)
+
 可以看到每个 Partition 中的消息都是有序的，生产的消息被不断追加到 Partition log 上，其中的每一个消息都被赋予了一个唯一的 offset 值。
+
 ![消费者](https://img-blog.csdnimg.cn/20210121153238183.png)
+
 通过分区可以 方便在集群中扩展，可以提高并发。
 
 形象理解：
@@ -114,6 +117,7 @@ producer采用  push 模式将消息发布到 broker，每条消息都被 append
 # 3 同步策略
 ### 3.1 同步方式
 ![数据同步方式 ](https://img-blog.csdnimg.cn/20210121194905780.png)
+
 为保证 producer 发送的数据，能可靠的发送到指定的 topic，topic的每个 partition 收到 producer 发送的数据后，都需要向 producer 发送ack，如果 producer 收到 ack，就会进行下一轮的发送，否则重新发送数据。问题是啥时候发ack呢？
 
 |方案  | 优点 | 缺点 
@@ -129,8 +133,10 @@ Kafka选择了`第二种`方案，原因如下：
 Leader 维护个动态的 in sync replica  set，意为和leader保持同步的follower集合。当 ISR 中的 follower 完成数据的同步之后，leader就会给 follower 发送ack。如果 follower 长时间未向leader同步数据，则该 follower 将被踢出 ISR，该时间阈值由replica.lag.time.max.ms参数设定。Leader发生故障之后，就会从 ISR 中选举新的 leader。
 ### 3.3 故障细节
 ![故障过程](https://img-blog.csdnimg.cn/20210121201401601.png)
+
 **LEO**：Long End Offset 指每个副本最大的offset。
 **HW**：High Watermark 指消费者能见到的最大的offset，ISR队列中最小的LEO。
+
 1. follower 故障
 >follower发生故障后会被临时踢出 ISR，待该 follower 恢复后，follower会读取本地磁盘记录的上次的HW，并将log文件高于HW的部分截取掉，从HW开始向leader进行同步。等 follower 追上 leader 之后重新加入ISR了。
 2. leader 故障
@@ -175,14 +181,22 @@ Leader 维护个动态的 in sync replica  set，意为和leader保持同步的f
 
 启动幂等性，在生产者参数中 enable.idompotence= true，开启幂等性的生产者在初始化时候会被分配一个PID，发送同一个Partition的消息会附带Sequence Number，Broker会对<PID，Partition，Sequence Number> 做缓存，以此来判断唯一性。但是如果PID重启就会发生变化，同时不同partition也具有不同的主键，幂等性无法保证跨分区会话的 Exactly Once。
 ### 4.3 Kafka Broker 信息落磁盘
+
+
+
 ![数据落盘过程](https://img-blog.csdnimg.cn/2021012220253770.png)
 
 Kafka Broker 收到信息后，如何落盘是通过 producer.type 来设定的，一般两个值。
 1. sync，默认模式，数据必须最终落盘才算OK。
 2. async，异步模式，数据刷新到OS的 Page Cache就返回，此时如果机器突然出问题，信息就丢失了。
 ### 4.4 消费者从 Kafka Broker 消费数据
+
+
+
 ![消费数据](https://img-blog.csdnimg.cn/20210122122822123.png)
+
 Consumer 是以 Consumer Group 消费者组的方式工作，由一个或者多个消费者组成一个组，共同消费一个topic。每个分区在同一时间只能由group中的一个消费者读取，但是多个group可以同时消费这个partition。如果一个消费者失败了，那么其他的 group 成员会自动负载均衡读取之前失败的消费者读取的分区。Consumer Group 从 Broker 拉取消息来消费主要分为两个阶段：
+
 1. 获得数据，提交 Offset。
 2. 开始处理数据。
 
@@ -237,9 +251,13 @@ Kafka 可支持百万 TPS 跟如下几个特性有关。
 
 ### 6.1 顺序读写数据
 信息存储在硬盘中，硬盘由很多盘片组成，显微镜观察盘片会看见盘片表面凹凸不平，凸起的地方被磁化代表数字1，凹的地方是没有被磁化代表数字0，因此硬盘可以以二进制来存储表示文字、图片等信息。
+
 ![磁盘平面图](https://img-blog.csdnimg.cn/20210122174034168.png)
+
 上图是硬盘的实际图，可能无法理解内部构造，我们来看个形象的图：
+
 ![磁盘内部图](https://img-blog.csdnimg.cn/20210122175224301.png)
+
 1. 系统通过`磁头`从`盘面`读取数据，  磁头在盘面上的飞行高度只是人类头发直径的千分之一。
 2. 硬盘里的`盘片`跟CD光盘的长相类似，一个`盘片`有上下两个`盘面`，每个`盘面`都可以存储数据。
 3. 每个`盘面`会被划分出超级多的同心圆`磁道`，同心圆的半径是不同的。
@@ -256,7 +274,10 @@ Kafka 可支持百万 TPS 跟如下几个特性有关。
 2. 旋转延迟：盘片旋转将请求数据所在扇区移至读写磁头下方所需要的时间，旋转延迟取决于磁盘转速。如果是 5400 转每分钟的磁盘，平均大概为 5 ms。
 3. 数据传输：磁头位从目标扇区第一个位置，到访问完所有数据的耗时。假如5400转的磁道有400个扇区，我只访问一个则耗时 0.0278ms。
 
-可以发现读取主要耗时是在前两个，如果我顺序读取则`寻道`跟`旋转延迟`只用一次即可。而如果随机读取呢则可能经历多次`寻道`跟`旋转延迟`，两者相差几乎 **3**个数量级。![随机跟顺序读写在磁盘跟内存中](https://img-blog.csdnimg.cn/20210122195144312.png)
+可以发现读取主要耗时是在前两个，如果我顺序读取则`寻道`跟`旋转延迟`只用一次即可。而如果随机读取呢则可能经历多次`寻道`跟`旋转延迟`，两者相差几乎 **3**个数量级。
+
+![随机跟顺序读写在磁盘跟内存中](https://img-blog.csdnimg.cn/20210122195144312.png)
+
 ### 6.2  内存映射文件
 Memory Mapped Files：
 > 1. 虚拟内存系统 通过将虚拟内存分割为称作虚拟页(Virtual Page，VP)大小固定的块，一般情况下，每个虚拟页的大小默认是4KB。同样的，物理内存也被分割为物理页(Physical Page，PP)，也为4KB。
@@ -275,7 +296,9 @@ CPU 发出指令操作 IO 来进行读写操作，大部分情况下其实只是
 
 ##### 6.3.2 Kafka 读写对比
 ![零拷贝](https://img-blog.csdnimg.cn/20210122210837614.png)
+
 如上黑色流程是没用 Zero Copy 技术流程：
+
 1. DMA传输，磁盘读取数据到操作系统内存 Page Cache 区。
 2. CPU搬运，数据从 Page Cache 区数据复制到用户内存区。
 3. CPU搬运，数据从用户内存区到  Socket Cache 区。
@@ -286,6 +309,14 @@ CPU 发出指令操作 IO 来进行读写操作，大部分情况下其实只是
 2. DMA传输，数据从 系统内存 Page Cache 区传输到 NIC网卡缓存区。
 ### 6.4 Batch Deal 
 消费者拉取数据的时候，Kafka 不是一个一个的来送数据的，而是批量发送来处理的，这样可以节省网络传输，增大系统的TPS，不过也有个缺点就是，我们的数据不是真正的实时处理的，而真正的实时还是要看 Flink。
+
+### 6.5 Kafka中的重平衡
+
+[基本流程](https://blog.csdn.net/q322625/article/details/101461087)就是 Coordinator(协调者) 感知到 消费者组的变化，然后在心跳的过程中发送重平衡信号通知各个消费者离组，
+然后消费者重新以 JoinGroup 方式加入 Coordinator，并选出Consumer Leader。当所有消费者加入 Coordinator，Consumer Leader会根据 Coordinator给予的分区信息给出分区方案。Coordinator 将该方案以 SyncGroup 的方式将该方案执行下去，通知各个消费者，这样就完成了一轮 重平衡了。
+
+PS : Kafka未来的2.8版本将要放弃Zookeeper
+
 # 7 参考
 > 1. Kafka 为什么要分区 ：https://www.zhihu.com/question/28925721
 > 2. 关于磁盘读取：https://blog.csdn.net/holybin/article/details/21175781

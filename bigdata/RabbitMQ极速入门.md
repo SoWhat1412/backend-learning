@@ -3,42 +3,59 @@
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200719231059104.png#pic_center)
 
 # 1. 消息队列解决了什么问题
+
 消息中间件是目前比较流行的一个中间件，其中RabbitMQ更是占有一定的市场份额，主要用来做异步处理、应用解耦、流量削峰、日志处理等等方面。
 ### 1. 异步处理
 一个用户登陆网址注册，然后系统发短信跟邮件告知注册成功，一般有三种解决方法。
 1. 串行到依次执行，问题是用户注册后就可以使用了，没必要等验证码跟邮件。
 2. 注册成功后，邮件跟验证码用并行等方式执行，问题是邮件跟验证码是非重要的任务，系统注册还要等这俩完成么？
 3. 基于异步MQ的处理，用户注册成功后直接把信息异步发送到MQ中，然后邮件系统跟验证码系统主动去拉取数据。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718205447197.png#pic_center)
 
 ### 2. 应用解耦
 比如我们有一个订单系统，还要一个库存系统，用户下订单了就要调用下库存系统来处理，直接调用到话库存系统出现问题咋办呢？
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200717231242123.png#pic_center)
+
 ### 3. 流量削峰
 举办一个 [秒杀活动](https://blog.csdn.net/qq_35190492/article/details/103105780)，如何较好到设计？服务层直接接受瞬间搞密度访问绝对不可以起码要加入一个MQ。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200717231627369.png?#pic_center)
 ### 4. 日志处理
 用户通过WebUI访问发送请求到时候后端如何接受跟处理呢一般？
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200717231729560.png#pic_center)
+
 # 2. RabbitMQ 安装跟配置
 官网：[https://www.rabbitmq.com/download.html](https://www.rabbitmq.com/download.html)
 开发语言：[https://www.erlang.org/](https://www.erlang.org/)
 正式到安装跟允许需要Erlang跟RabbitMQ俩版本之间相互兼容！我这里图省事直接用Docker [拉取镜像](https://www.cnblogs.com/light-train-union/p/11906933.html)了。
 下载：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200717235603773.png#pic_center)
+
 开启：
  管理页面 默认账号：guest  默认密码：guest 。Docker启动时候可以指定账号密码对外端口以及
 ```bash
 docker run -d --hostname my-rabbit --name rabbit -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -p 15672:15672 -p 5672:5672 -p 25672:25672 -p 61613:61613 -p 1883:1883 rabbitmq:management 
 ```
 启动：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718000102965.png#pic_center)
+
 用户添加：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718090523405.png#pic_center)
+
 vitrual hosts 相当于mysql中的DB。创建一个virtual hosts，一般以/ 开头。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718090750103.png#pic_center)
+
 对用户进行授权，点击/vhost_mmr，
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020071809102617.png#pic_center)
+
 至于WebUI多点点即可了解。
 
 # 3. 实战
@@ -203,10 +220,13 @@ public class Recv {
 }
 ```
 右上角有可以设置页面刷新频率，然后可以在UI界面直接手动消费掉，如下图：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718094642967.png#pic_center)
+
 `简单队列的不足`：耦合性过高，生产者一一对应消费者，如果有多个消费者想消费队列中信息就无法实现了。
 ### 2. WorkQueue 工作队列
 Simple队列中只能一一对应的生产消费，实际开发中生产者发消息很简单，而消费者要跟业务结合，消费者接受到消息后要处理从而会耗时。**可能会出现队列中出现消息积压**。所以如果多个消费者可以加速消费。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718215316255.png#pic_center)
 
 ##### 1. round robin 轮询分发
@@ -322,7 +342,9 @@ public class Recv2 {
 消费者1:处理偶数
 消费者2:处理奇数
 这种方式叫`轮询分发(round-robin)`结果就是不管两个消费者谁忙，**数据总是你一个我一个**，MQ 给两个消费发数据的时候是不知道消费者性能的，默认就是雨露均沾。此时 autoAck = true。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718104913426.png#pic_center)
+
 ##### 2. 公平分发 fair dipatch
 如果要实现`公平分发`，要让消费者消费完毕一条数据后就告知MQ，再让MQ发数据即可。自动应答要关闭！
 ```java
@@ -584,13 +606,17 @@ public class Recv2 {
 }
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718120319788.png#pic_center)
+
 **同时还可以自己手动的添加一个队列监控到该exchange**
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718120754581.png#pic_center)
+
 ### 4. routing 路由选择 通配符模式
 Exchange(交换机，转发器)：**一方面接受生产者消息，另一方面是向队列推送消息**。
 匿名转发用 ""  表示，比如前面到简单队列跟WorkQueue。
 `fanout`：不处理路由键。**不需要指定routingKey**，我们只需要把队列绑定到交换机， **消息就会被发送到所有到队列中**。
  `direct`：处理路由键，**需要指定routingKey**，此时生产者发送数据到时候会指定key，任务队列也会指定key，只有key一样消息才会被传送到队列中。如下图
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718215220628.png#pic_center)
 
 ```java
@@ -715,11 +741,15 @@ public class Recv2 {
 }
 ```
 WebUI:
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718214400470.png#pic_center)
+
 `缺点`：路由key必须要明确，无法实现规则性模糊匹配。
 ### 5. Topics 主题
 将路由键跟某个模式匹配，# 表示匹配 >=1个字符， *表示匹配一个。生产者会带routingKey，但是消费者的MQ会带模糊routingKey。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718215123884.png#pic_center)
+
 商品：发布、删除、修改、查询。
 ```java
 package com.sowhat.mq.topic;
@@ -862,7 +892,9 @@ channel.queueDeclare(Send.QUEUE_NAME, false, false, false, null);
 `boolean durable`就是表明是否可以持久化，如果我们将程序中的`durable = false`改为`true`是不可以的！因为我们已经定义过的`test_work_queue`，这个queue已声明为未持久化的。 
 `结论`：MQ 不允许修改一个已经存在的队列参数。
 ### 7. 消费者端手动跟自动确认消息
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718111031276.png#pic_center)
+
 ```java
         // 自动应答
         boolean autoAck = false;
@@ -1063,8 +1095,10 @@ public class Send2 {
 ```
 ###### 3. 异步confirm模式，提供一个回调方法。
 `Channel`对象提供的ConfirmListener()回调方法只包含`deliveryTag`(包含当前发出消息序号)，我们需要自己为每一个Channel维护一个`unconfirm`的消息序号集合，每`publish`一条数据，集合中元素加1，每回调一次`handleAck`方法，`unconfirm`集合删掉响应的一条(`multiple=false`)或多条(`multiple=true`)记录，从运行效率来看，`unconfirm`集合最好采用有序集合`SortedSet`存储结构。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020071921400852.png#pic_ enter)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020071921400852.png#pic_enter)
 ```java
+
 package com.sowhat.mq.confirm;
 
 import com.rabbitmq.client.*;
@@ -1318,8 +1352,11 @@ public class LogsReceiverService {
 
 # 参考
 [SpringBoot整合RabbitMQ](https://blog.csdn.net/qq_35387940/article/details/100514134)
+
 [RabbitMQ安装跟SpringBoot整合demo](https://download.csdn.net/download/qq_31821675/12638636)
+
 [RabbitMQ极速入门](https://download.csdn.net/download/qq_31821675/12640407)
+
 [RabbitMQdemo](https://download.csdn.net/download/qq_31821675/12643614)
 
 

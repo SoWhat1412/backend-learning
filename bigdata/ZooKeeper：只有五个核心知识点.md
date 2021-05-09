@@ -1,11 +1,13 @@
-﻿![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108204826474.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108204826474.png)
 # 1 ZooKeeper简介
 **ZooKeeper** 是一个开源的**分布式协调框架**，它的定位是为分布式应用提供一致性服务，是整个大数据体系的管理员。**ZooKeeper** 会封装好复杂易出错的关键服务，将高效、稳定、易用的服务提供给用户使用。
 
 如果上面的官方言语你不太理解，你可以认为 **ZooKeeper** = **文件系统** + **监听通知机制**。
 ### 1.1 文件系统
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210107200039138.png)
+
 **Zookeeper**维护一个类似文件系统的树状数据结构，这种特性使得 **Zookeeper** 不能用于存放大量的数据，每个节点的存放数据上限为**1M**。每个子目录项如 NameService 都被称作为 **znode**(目录节点)。和文件系统一样，我们能够自由的增加、删除**znode**，在一个**znode**下增加、删除子**znode**，唯一的不同在于**znode**是可以存储数据的。默认有四种类型的**znode**：
+
 1. **持久化目录节点 PERSISTENT**：客户端与zookeeper断开连接后，该节点依旧存在。
 2. **持久化顺序编号目录节点 PERSISTENT_SEQUENTIAL**：客户端与zookeeper断开连接后，该节点依旧存在，只是Zookeeper给该节点名称进行顺序编号。
 3. **临时目录节点 EPHEMERAL**：客户端与zookeeper断开连接后，该节点被删除。
@@ -22,7 +24,9 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 >3. 客户端回调 Watcher 客户端。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210110102117560.png)
+
 **监听流程**：
+
 >1. 首先要有一个main()线程
 >2. 在main线程中创建Zookeeper客户端，这时就会创建两个线程，一个负责网络连接通信（connet），一个负责监听（listener）。
 >3. 通过connect线程将注册的监听事件发送给Zookeeper。
@@ -30,7 +34,13 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 >5. Zookeeper监听到有数据或路径变化，就会将这个消息发送给listener线程。
 >6. listener线程内部调用了process()方法。
 ### 1.3 Zookeeper 特点
+
+
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108122825762.png)
+
+
+
 1. **集群**：Zookeeper是一个领导者（Leader），多个跟随者（Follower）组成的集群。
 2. **高可用性**：集群中只要有半数以上节点存活，Zookeeper集群就能正常服务。
 3. **全局数据一致**：每个Server保存一份相同的数据副本，Client无论连接到哪个Server，数据都是一致的。
@@ -41,8 +51,12 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 8. Zookeeper是一个分布式协调系统，满足CP性，跟[SpringCloud](https://mp.weixin.qq.com/s/A4yRiLBM9JTcPV8nulln2A)中的Eureka满足AP不一样。
 >1. 分布式协调系统：Leader会同步数据到follower，用户请求可通过follower得到数据，这样不会出现单点故障，并且只要同步时间无限短，那这就是个好的 分布式协调系统。
 >2. CAP原则又称CAP定理，指的是在一个分布式系统中，一致性（Consistency）、可用性（Availability）、分区容错性（Partition tolerance）。CAP 原则指的是，这三个要素最多只能同时实现两点，不可能三者兼顾。
+>
+
+
 # 2  Zookeeper  提供的功能
-通过对 Zookeeper 中丰富的数据节点进行交叉使用，配合 **Watcher** 事件通知机制，可以非常方便的构建一系列分布式应用中涉及的核心功能，比如 **数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列** 等功能。
+
+>通过对 Zookeeper 中丰富的数据节点进行交叉使用，配合 **Watcher** 事件通知机制，可以非常方便的构建一系列分布式应用中涉及的核心功能，比如 **数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列** 等功能。
 ### 1. 数据发布/订阅
 当某些数据由几个机器共享，且这些信息经常变化数据量还小的时候，这些数据就适合存储到ZK中。
 - **数据存储**：将数据存储到 Zookeeper 上的一个数据节点。
@@ -50,16 +64,22 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 - **数据变更**：当变更数据时会更新 Zookeeper 对应节点数据，Zookeeper会将数据变更**通知**发到各客户端，客户端接到通知后重新读取变更后的数据即可。
 ### 2. 分布式锁
 关于分布式锁其实在 [**Redis**](https://mp.weixin.qq.com/s/UfJE6V45MoAQK2RpmNbvhA) 中已经讲过了，并且Redis提供的分布式锁是比ZK性能强的。基于ZooKeeper的分布式锁一般有如下两种。
+
 1. 保持独占
 >**核心思想**：在zk中有一个唯一的临时节点，只有拿到节点的才可以操作数据，没拿到的线程就需要等待。
 **缺点**：可能引发`羊群效应`，第一个用完后瞬间有999个同时并发的线程向zk请求获得锁。
+
 2. 控制时序
-> 主要是避免了羊群效应，临时节点已经预先存在，所有想要获得锁的线程在它下面创建临时顺序编号目录节点，编号最小的获得锁，用完删除，后面的依次排队获取。
-> 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210107202857479.png)
+
+   主要是避免了羊群效应，临时节点已经预先存在，所有想要获得锁的线程在它下面创建临时顺序编号目录节点，编号最小的获得锁，用完删除，后面的依次排队获取。
+
+> ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210107202857479.png)
+
 ### 3. 负载均衡
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210107210344555.png)
+
 多个相同的jar包在不同的服务器上开启相同的服务，可以通过nginx在服务端进行负载均衡的配置。也可以通过ZooKeeper在客户端进行负载均衡配置。
+
 1. 多个服务注册
 2. 客户端获取中间件地址集合
 3. 从集合中随机选一个服务执行任务
@@ -67,17 +87,21 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 **ZooKeeper负载均衡和Nginx负载均衡区别**：
 >1. **ZooKeeper**不存在单点问题，zab机制保证单点故障可重新选举一个leader只负责服务的注册与发现，不负责转发，减少一次数据交换（消费方与服务方直接通信），需要自己实现相应的负载均衡算法。
 >2. **Nginx**存在单点问题，单点负载高数据量大,需要通过 **KeepAlived** + **LVS** 备机实现高可用。每次负载，都充当一次中间人转发角色，增加网络负载量（消费方与服务方间接通信），自带负载均衡算法。
+
 ### 4. 命名服务
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010819584479.png)
 
 命名服务是指通过指定的名字来获取资源或者服务的地址，利用 zk 创建一个全局唯一的路径，这个路径就可以作为一个名字，指向集群中的集群，提供的服务的地址，或者一个远程的对象等等。
+
 ### 5. 分布式协调/通知
 1. 对于系统调度来说，用户更改zk某个节点的value， ZooKeeper会将这些变化发送给注册了这个节点的 watcher 的所有客户端，进行通知。
 2. 对于执行情况汇报来说，每个工作进程都在目录下创建一个携带工作进度的临时节点，那么汇总的进程可以监控目录子节点的变化获得工作进度的实时的全局情况。
 
 ### 6. 集群管理
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108200244719.png)
+
 大数据体系下的大部分集群服务好像都通过**ZooKeeper**管理的，其实管理的时候主要关注的就是机器的[动态上下线](http://blog.itpub.net/31509949/viewspace-2218265/)跟**Leader**选举。
+
 1. 动态上下线：
 > 比如在**zookeeper**服务器端有一个**znode**叫 **/Configuration**，那么集群中每一个机器启动的时候都去这个节点下创建一个**EPHEMERAL**类型的节点，比如**server1** 创建 **/Configuration/Server1**，**server2**创建**/Configuration /Server1**，然后**Server1**和**Server2**都**watch**  **/Configuration** 这个父节点，那么也就是这个父节点下数据或者子节点变化都会通知到该节点进行**watch**的客户端。
 
@@ -87,9 +111,13 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 
 # 3  Leader选举
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010818494470.gif#pic_center)
+
 **ZooKeeper**集群节点个数一定是**奇数**个，一般3个或者5个就OK。为避免集群群龙无首，一定要选个大哥出来当Leader。这是个[高频考点](https://thinkwon.blog.csdn.net/article/details/104397719)。
+
 ### 3.1 预备知识
+
 ##### 3.1.1. 节点四种状态。
+
 1. **LOOKING**：寻 找 Leader 状态。当服务器处于该状态时会认为当前集群中没有 Leader，因此需要进入 Leader 选举状态。
 2. **FOLLOWING**：跟随者状态。处理客户端的非事务请求，转发事务请求给 Leader 服务器，参与事务请求 Proposal(提议) 的投票，参与 Leader 选举投票。
 3. **LEADING**：领导者状态。事务请求的唯一调度和处理者，保证集群事务处理的顺序性，集群内部个服务器的调度者(管理follower,数据同步)。
@@ -99,14 +127,21 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 
 ### 3.1.3  ZXID 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108120436117.png)
+
 **ZooKeeper** 采用全局递增的事务 Id 来标识，所有 proposal(提议)在被提出的时候加上了**ZooKeeper Transaction Id** ，zxid是64位的Long类型，**这是保证事务的顺序一致性的关键**。zxid中高32位表示纪元**epoch**，低32位表示事务标识**xid**。你可以认为zxid越大说明存储数据越新。
+
 1. 每个leader都会具有不同的**epoch**值，表示一个纪元/朝代，用来标识 **leader** 周期。每个新的选举开启时都会生成一个新的**epoch**，新的leader产生的话**epoch**会自增，会将该值更新到所有的zkServer的**zxid**和**epoch**，
 2. **xid**是一个依次递增的事务编号。数值越大说明数据越新，所有 proposal（提议）在被提出的时候加上了**zxid**，然后会依据数据库的[两阶段过程](https://mp.weixin.qq.com/s/b5mGEbn-FLb9vhOh1OpwIg)，首先会向其他的 server 发出事务执行请求，如果超过半数的机器都能执行并且能够成功，那么就会开始执行。
 ### 3.2 Leader选举
 **Leader**的选举一般分为**启动时选举**跟Leader挂掉后的**运行时选举**。
 ##### 3.2.1 启动时Leader选举
+
+
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108122825762.png)
+
 我们以上面的5台机器为例，只有超过半数以上，即最少启动3台服务器，集群才能正常工作。
+
 1. 服务器1启动，发起一次选举。
 >服务器1投自己一票。此时服务器1票数一票，不够半数以上（3票），选举无法完成，服务器1状态保持为**LOOKING**。
 
@@ -123,7 +158,9 @@ ZooKeeper 的 Watcher 机制，总的来说可以分为三个过程：
 >**Leader**是服务器3，状态为**LEADING**。其余服务器是**Follower**，状态为**FOLLOWING**。
 ##### 3.2.2 运行时Leader选举
 运行时候如果Master节点崩溃了会走恢复模式，新Leader选出前会暂停对外服务，大致可以分为四个阶段  `选举`、`发现`、`同步`、`广播`。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010817505565.png)
+
 1. 每个Server会发出一个投票，第一次都是投自己，其中投票信息 = (myid，ZXID)
 2. 收集来自各个服务器的投票
 3. 处理投票并重新投票，处理逻辑：**优先比较ZXID，然后比较myid**。
@@ -149,7 +186,9 @@ ZAB (Zookeeper Atomic Broadcast **原子广播协议**) 协议是为分布式协
 
 ### 4.2 原子广播模式
 你可以认为消息广播机制是简化版的 [2PC协议](https://mp.weixin.qq.com/s/b5mGEbn-FLb9vhOh1OpwIg)，就是通过如下的机制**保证事务的顺序一致性**的。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210108163722802.png)
+
 1.  **leader**从客户端收到一个写请求后生成一个新的事务并为这个事务生成一个唯一的`ZXID`，
 2. **leader**将将带有 **zxid** 的消息作为一个提案(**proposal**)分发给所有 **FIFO**队列。
 3.  **FIFO**队列取出队头**proposal**给**follower**节点。
@@ -168,6 +207,7 @@ ZAB (Zookeeper Atomic Broadcast **原子广播协议**) 协议是为分布式协
 2. ZAB 协议确保`丢弃`那些只在 Leader 提出/复制，但没有提交的事务。
 
 至于如何实现**确保提交已经被 Leader 提交的事务，同时丢弃已经被跳过的事务**呢？关键点就是依赖上面说到过的 **ZXID**了。
+
 ### 4.4 ZAB 特性
 1. 一致性保证
 >可靠提交(Reliable delivery) ：如果一个事务 A 被一个server提交(committed)了，那么它最终一定会被所有的server提交
@@ -187,7 +227,9 @@ ZAB (Zookeeper Atomic Broadcast **原子广播协议**) 协议是为分布式协
 
 不同点：
 >ZAB 用来构建高可用的**分布式数据主备系统**（Zookeeper），Paxos 是用来构建**分布式一致性状态机系统**。
+
 # 5 ZooKeeper 零散知识
+
 ### 5.1 常见指令
 Zookeeper 有三种部署模式：
 >1. 单机部署：一台机器上运行。
@@ -208,6 +250,7 @@ Zookeeper 有三种部署模式：
 | rmr |  递归删除节点|
 
 ### 5.2 Zookeeper客户端
+
 ##### 5.2.1. Zookeeper原生客户端
 Zookeeper客户端是异步的哦！需要引入CountDownLatch 来确保连接好了再做下面操作。Zookeeper原生api是不支持迭代式的创建跟删除路径的，具有如下弊端。
 >1. 会话的连接是异步的；必须用到回调函数 。
@@ -219,17 +262,22 @@ Zookeeper客户端是异步的哦！需要引入CountDownLatch 来确保连接�
 开源的zk客户端，在原生API基础上封装，是一个更易于使用的zookeeper客户端，做了如下优化。
 > 优化一 、在session loss和session expire时自动创建新的ZooKeeper实例进行重连。
 > 优化二、 将一次性watcher包装为持久watcher。
+
 ##### 5.2.3. Curator
 开源的zk客户端，在原生API基础上封装，apache顶级项目。是Netflix公司开源的一套Zookeeper客户端框架。了解过Zookeeper原生API都会清楚其复杂度。Curator帮助我们在其基础上进行封装、实现一些开发细节，包括接连重连、反复注册Watcher和NodeExistsException等。目前已经作为Apache的顶级项目出现，是最流行的Zookeeper客户端之一。
+
 ##### 5.2.4. Zookeeper图形化客户端工具
 工具名叫[ZooInspector](https://www.cnblogs.com/weiyiming007/p/11951591.html)，百度安装教程即可。
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2021010820381323.png)
+
 ### 5.3 ACL 权限控制机制
 [ACL](https://blog.csdn.net/u012988901/article/details/83388419)全称为Access Control List 即访问控制列表，用于控制资源的访问权限。zookeeper利用ACL策略控制节点的访问权限，如节点数据读写、节点创建、节点删除、读取子节点列表、设置节点权限等。
+
 ### 5.4 Zookeeper使用注意事项
 1. 集群中机器的数量并不是越多越好，一个写操作需要半数以上的节点ack，所以集群节点数越多，整个集群可以抗挂点的节点数越多(越可靠)，但是吞吐量越差。集群的数量必须为奇数。
 2. zk是基于内存进行读写操作的，有时候会进行消息广播，因此不建议在节点存取容量比较大的数据。
 3. dataDir目录、dataLogDir两个目录会随着时间推移变得庞大，容易造成硬盘满了。建议自己编写或使用自带的脚本保留最新的n个文件。
 4.  默认最大连接数 默认为60，配置maxClientCnxns参数，配置单个客户端机器创建的最大连接数。
+
 ---
 

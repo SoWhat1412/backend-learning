@@ -124,7 +124,9 @@ public class ConnectionUtils {
 }
 ```
 ### 1. 简单队列
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718092127564.png#pic_center)
+
 P:Producer 消息的生产者
 中间：Queue消息队列
 C:Consumer 消息的消费者
@@ -472,6 +474,7 @@ public class Recv2 {
 
 ### 3. publish/subscribe 发布订阅模式
   类似公众号的订阅跟发布，无需指定routingKey：
+
   ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718215251455.png#pic_center)
 
    解读：
@@ -612,10 +615,10 @@ public class Recv2 {
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718120754581.png#pic_center)
 
 ### 4. routing 路由选择 通配符模式
-Exchange(交换机，转发器)：**一方面接受生产者消息，另一方面是向队列推送消息**。
-匿名转发用 ""  表示，比如前面到简单队列跟WorkQueue。
-`fanout`：不处理路由键。**不需要指定routingKey**，我们只需要把队列绑定到交换机， **消息就会被发送到所有到队列中**。
- `direct`：处理路由键，**需要指定routingKey**，此时生产者发送数据到时候会指定key，任务队列也会指定key，只有key一样消息才会被传送到队列中。如下图
+- Exchange(交换机，转发器)：**一方面接受生产者消息，另一方面是向队列推送消息**。
+- 匿名转发用 ""  表示，比如前面到简单队列跟WorkQueue。
+- `fanout`：不处理路由键。**不需要指定routingKey**，我们只需要把队列绑定到交换机， **消息就会被发送到所有到队列中**。
+- `direct`：处理路由键，**需要指定routingKey**，此时生产者发送数据到时候会指定key，任务队列也会指定key，只有key一样消息才会被传送到队列中。如下图
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200718215220628.png#pic_center)
 

@@ -1,7 +1,7 @@
 ﻿
 
 >高清思维导图已同步Git：https://github.com/SoWhat1412/xmindfile，关注公众号sowhat1412获取海量资源
->
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218101648866.png#pic_center)
 
 
@@ -30,8 +30,11 @@ Redis对SDS再次封装生成了`RedisObject`，核心有两个作用：
 并且Redis底层对SDS有如下优化：
 > 1. SDS修改后大小 > 1M时 系统会多分配空间来进行`空间预分配`。
 > 2. SDS是`惰性释放空间`的，你free了空间，可是系统把数据记录下来下次想用时候可直接使用。不用新申请空间。
+
 ### 1.2、List
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218110450176.png#pic_center)
+
 查看源码底层 `adlist.h` 会发现底层就是个 **双端链表**，该链表最大长度为2^32-1。常用就这几个组合。
 > lpush + lpop = stack 先进后出的栈
  lpush + rpop = queue 先进先出的队列
@@ -48,8 +51,9 @@ Redis对SDS再次封装生成了`RedisObject`，核心有两个作用：
 hash的底层主要是采用字典dict的结构，整体呈现层层封装。从小到大如下：
 ##### 1.3.1、dictEntry
 >真正的数据节点，包括key、value 和 next 节点。
->
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218110536782.png#pic_center)
+
 ##### 1.3.2、dictht
 >1、数据 dictEntry 类型的数组，每个数组的item可能都指向一个链表。
 2、数组长度 size。
@@ -57,6 +61,7 @@ hash的底层主要是采用字典dict的结构，整体呈现层层封装。从
 4、当前 dictEntry 数组中包含总共多少节点。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201210165853649.png#pic_center)
+
 ##### 1.3.3、dict
 >1、[dictType](https://www.cnblogs.com/yangming1996/p/11567856.html) 类型，包括一些自定义函数，这些函数使得key和value能够存储 
 2、rehashidx 其实是一个标志量，如果为`-1`说明当前没有扩容，如果`不为 -1` 则记录扩容位置。
@@ -68,6 +73,7 @@ hash的底层主要是采用字典dict的结构，整体呈现层层封装。从
 **组合后结构就是如下**：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020121811063120.png#pic_center)
+
 ##### 1.3.4、渐进式扩容
 为什么 dictht ht[2]是两个呢？**目的是在扩容的同时不影响前端的CURD**，慢慢的把数据从ht[0]转移到ht[1]中，同时`rehashindex`来记录转移的情况，当全部转移完成，将ht[1]改成ht[0]使用。
 
@@ -83,6 +89,7 @@ rehashidx = -1说明当前没有扩容，rehashidx != -1则表示扩容到数组
 >2、如果是删除，更新，查询，则先查找第一个数组，如果没找到，则再查询第二个数组。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218102053376.png#pic_center)
+
 ### 1.4、Set
 如果你明白Java中HashSet是[HashMap](https://mp.weixin.qq.com/s/XGTNaOddY3elcumcPyO1KA)的简化版那么这个Set应该也理解了。都是一样的套路而已。这里你可以认为是没有Value的Dict。看源码 `t.set.c` 就可以了解本质了。
 ```c
@@ -96,6 +103,7 @@ int setTypeAdd(robj *subject, robj *value) {
         }
         ....
 ```
+
 ### 1.5、ZSet
 范围查找 的天敌就是 有序集合，看底层 `redis.h` 后就会发现 Zset用的就是可以跟二叉树媲美的`跳跃表`来实现有序。跳表就是多层**链表**的结合体，跳表分为许多层(level)，每一层都可以看作是数据的**索引**，**这些索引的意义就是加快跳表查找数据速度**。
 
@@ -105,16 +113,22 @@ int setTypeAdd(robj *subject, robj *value) {
 
 1. 没有跳表查询
 比如我查询数据37，如果没有上面的索引时候路线如下图：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328222024546.png#pic_center#pic_center)
+
 3. 有跳表查询
 有跳表查询37的时候路线如下图：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328222121177.png#pic_center#pic_center)
+
 应用场景：
 >积分排行榜、时间排序新闻、延时队列。
 
 ### 1.6、Redis Geo
 以前写过[Redis Geo核心原理解析](https://mp.weixin.qq.com/s/F4EvBqxEMDF4ksSGLAmXyA)，想看的直接跳转即可。他的核心思想就是将地球近似为球体来看待，然后 GEO利用 GeoHash 将二维的经纬度转换成字符串，来实现位置的划分跟指定距离的查询。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201210190628614.jpg)
+
 ### 1.7、HyperLogLog
 HyperLogLog ：是一种`概率`数据结构，它使用概率算法来统计集合的近似基数。而它算法的最本源则是`伯努利过程 + 分桶 + 调和平均数`。具体实现可看  [HyperLogLog 讲解](https://sowhat.blog.csdn.net/article/details/103027371)。
 
@@ -126,7 +140,9 @@ HyperLogLog底层 一共分了 **2^14** 个桶，也就是 16384 个桶。每个
 BitMap 原本的含义是用一个比特位来映射某个元素的状态。由于一个比特位只能表示 0 和 1 两种状态，所以 BitMap 能映射的状态有限，但是使用比特位的优势是能大量的节省内存空间。
 
 在 Redis 中BitMap 底层是基于字符串类型实现的，可以把 Bitmaps 想象成一个以比特位为单位的数组，数组的每个单元只能存储0和1，数组的下标在 Bitmaps 中叫做偏移量，BitMap 的 offset 值上限 **2^32 - 1**。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218103804269.png#pic_center)
+
 1. 用户签到
 > key = 年份：用户id  offset = （今天是一年中的第几天） % （今年的天数）
 2. 统计活跃用户
@@ -142,11 +158,16 @@ BitMap 原本的含义是用一个比特位来映射某个元素的状态。由�
 >当一个元素被加入集合时，通过K个散列函数将这个元素映射成一个位数组中的K个点(有效降低冲突概率)，把它们置为1。检索时，我们只要看看这些点是不是都是1就知道集合中有没有它了：如果这些点有任何一个为0，则被检元素一定不在；如果都是1，则被检元素很可能在。这就是布隆过滤器的基本思想。
 
 想玩的话可以用Google的`guava`包玩耍一番。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201210202435111.png#pic_center#pic_center)
+
 ### 1.10 发布订阅
 redis提供了`发布、订阅`模式的消息机制，其中消息订阅者与发布者不直接通信，发布者向指定的频道（channel）发布消息，订阅该频道的每个客户端都可以接收到消息。不过比专业的MQ(RabbitMQ RocketMQ ActiveMQ Kafka)相比不值一提，这个功能就算球了。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104327704.png#pic_center)
+
 # 2、持久化
+
 因为Redis数据在内存，断电既丢，因此持久化到磁盘是必须得有的，Redis提供了RDB跟AOF两种模式。
 ### 2.1、RDB
 RDB 持久化机制，是对 Redis 中的数据执行周期性的持久化。更适合做冷备。
@@ -159,12 +180,14 @@ RDB 持久化机制，是对 Redis 中的数据执行周期性的持久化。更
 2、备份时占用内存，因为Redis 在备份时会独立fork一个**子进程**，将数据写入到一个临时文件（此时内存中的数据是原来的两倍哦），最后再将临时文件替换之前的备份文件。所以要考虑到大概两倍的数据膨胀性。
 
 注意手动触发及[COW](https://blog.csdn.net/lh87270202/article/details/106430154)：
+
 > 1、`SAVE` 直接调用 rdbSave ，`阻塞` Redis 主进程，导致无法提供服务。
 > 2、`BGSAVE` 则 fork 出一个子进程，子进程负责调用 rdbSave ，在保存完成后向主进程发送信号告知完成。 在BGSAVE 执行期间**仍可以继续处理客户端的请求**。
 > 3、Copy On Write 机制，备份的是开始那个时刻内存中的数据，只复制被修改内存页数据，不是全部内存数据。
 4、Copy On Write 时如果父子进程大量写操作会导致分页错误。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104350970.png#pic_center)
+
 ### 2.2、AOF
 AOF 机制对每条写入命令作为日志，以 append-only 的模式写入一个日志文件中，因为这个模式是**只追加**的方式，所以没有任何磁盘寻址的开销，所以很快，有点像 Mysql 中的binlog。AOF更适合做热备。
 
@@ -179,6 +202,7 @@ AOF 机制对每条写入命令作为日志，以 append-only 的模式写入一
 第一步是命令的实时写入，不同级别可能有1秒数据损失。命令先追加到`aof_buf`然后再同步到AO磁盘，**如果实时写入磁盘会带来非常高的磁盘IO，影响整体性能**。
 
 第二步是对aof文件的**重写**，目的是为了减少AOF文件的大小，可以自动触发或者手动触发(**BGREWRITEAOF**)，是Fork出子进程操作，期间Redis服务仍可用。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104409814.png#pic_center)
 
 >1、在重写期间，由于主进程依然在响应命令，为了保证最终备份的完整性；它`依然会写入旧`的AOF中，如果重写失败，能够保证数据不丢失。
@@ -195,7 +219,9 @@ AOF 机制对每条写入命令作为日志，以 append-only 的模式写入一
 
 ### 2.3、恢复
 启动时会先检查AOF(数据更完整)文件是否存在，如果不存在就尝试加载RDB。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104438213.png#pic_center)
+
 ### 2.4、建议
 既然单独用RDB会丢失很多数据。单独用AOF，数据恢复没RDB来的快，所以出现问题了第一时间用RDB恢复，然后AOF做数据补全才说王道。
 
@@ -216,8 +242,9 @@ Zset：保存的元素个数小于定值且成员长度小于定值使用 **zipl
 
 ### 3.4、合适的线程模型：
 > `I/O 多路复用`模型同时监听客户端连接，多线程是需要上下文切换的，对于内存数据库来说这点很致命。
-> 
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104723400.png#pic_center)
+
 ### 3.5、 Redis6.0后引入`多线程`提速：
 要知道 读写网络的read/write系统耗时 `>>` Redis运行执行耗时，Redis的瓶颈主要在于**网络的 IO 消耗**, 优化主要有两个方向:
 > 提高网络 IO 性能，典型的实现比如使用 DPDK 来替代内核网络栈的方式
@@ -234,7 +261,9 @@ Zset：保存的元素个数小于定值且成员长度小于定值使用 **zipl
 
 # 4、常见问题
 ### 4.1、缓存雪崩
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201211093708734.png#pic_center#pic_center)
+
 雪崩定义：
 > Redis中大批量key在同一时间同时失效导致所有请求都打到了MySQL。而MySQL扛不住导致大面积崩塌。
 
@@ -252,7 +281,9 @@ Zset：保存的元素个数小于定值且成员长度小于定值使用 **zipl
 > 2、单个IP每秒访问次数超过阈值**直接拉黑IP**，关进小黑屋1天，在获取IP代理池的时候我就被拉黑过。
 > 3、从缓存取不到的数据，在数据库中也没有取到，这时也可以将key-value对写为key-null 失效时间可以为15秒**防止恶意攻击**。
 > 4、用Redis提供的  **Bloom Filter** 特性也OK。
+
 ### 4.3、缓存击穿
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201211100750411.png#pic_center#pic_center)
 
 击穿定义：
@@ -280,7 +311,9 @@ Zset：保存的元素个数小于定值且成员长度小于定值使用 **zipl
 更新：`先把数据存到数据库中，成功后，再让缓存失效`。
 
 ### 4.5、脑裂
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201212111426950.png#pic_center#pic_center)
+
 脑裂是指因为网络原因，导致master节点、slave节点 和 sentinel集群处于不用的网络分区，此时因为sentinel集群**无法感知**到master的存在，所以将slave节点提升为master节点 此时存在两个不同的master节点就像一个大脑分裂成了两个。其实在`Hadoop` 、`Spark`集群中都会出现这样的情况，只是解决方法不同而已(用ZK配合强制杀死)。
 
 集群脑裂问题中，如果客户端还在基于原来的master节点继续写入数据那么新的master节点将无法同步这些数据，当网络问题解决后sentinel集群将原先的master节点降为slave节点，此时再从新的master中同步数据将造成大量的数据丢失。
@@ -294,6 +327,7 @@ min-replicas-max-lag 10  表示slave连接到master的最大延迟时间
 
 ### 4.6、事务
 [MySQL](https://mp.weixin.qq.com/s/O_NHjv_YVUi4lSqXnhx5Mg)中的事务还是挺多道道的还要，而在Redis中的事务只要有如下三步：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218104854212.png#pic_center)
 
 关于事务具体结论：
@@ -329,6 +363,7 @@ min-replicas-max-lag 10  表示slave连接到master的最大延迟时间
 4、节点变化的通知：客户端注册了监听节点变化的时候，会**调用回调方法**
 
 大致流程如下，其中注意每个节点`只`监控它前面那个节点状态，从而避免`羊群效应`。关于模板代码百度即可。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218111439150.png#pic_center)
 
 缺点：
@@ -355,8 +390,10 @@ SETEX
 **Redisson** 是在Redis基础上的一个服务，采用了基于NIO的Netty框架，不仅能作为Redis底层驱动**客户端**，还能将原生的RedisHash，List，Set，String，Geo，HyperLogLog等数据结构封装为Java里大家最熟悉的映射（Map），列表（List），集（Set），通用对象桶（Object Bucket），地理空间对象桶（Geospatial Bucket），基数估计算法（HyperLogLog）等结构。
 
 这里我们只是用到了关于分布式锁的几个指令，他的大致底层原理：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218105550958.png#pic_center)
 [Redisson加锁解锁](https://mp.weixin.qq.com/s/y_Uw3P2Ll7wvk_j5Fdlusw) 大致流程图如下：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218105613825.png#pic_center)
 
 # 6、Redis 过期策略和内存淘汰策略
@@ -386,6 +423,7 @@ Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎�
 6、no-enviction（驱逐）：禁止驱逐数据，**不删除**的意思。
 
 面试常问常考的也就是**LRU**了，大家熟悉的`LinkedHashMap`中也实现了`LRU`算法的，LinkedHashMap 是通过双向链表和散列表这两种数据结构组合实现的。LinkedHashMap 中的`Linked`实际上是指的是双向链表，并非指用链表法解决散列冲突。稍微修改就是个LRU：
+
 ```java
 class SelfLRUCache<K, V> extends LinkedHashMap<K, V> {
     private final int CACHE_SIZE;
@@ -420,6 +458,7 @@ class SelfLRUCache<K, V> extends LinkedHashMap<K, V> {
 ###  7.1、redis主从复制
 该模式下 具有高可用性且读写分离， 会采用 `增量同步` 跟 `全量同步` 两种机制。
 ##### 7.1.1、全量同步
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218111505771.png#pic_center)
 
 Redis全量复制一般发生在**Slave初始化阶段**，这时Slave需要将Master上的**所有数据**都复制一份： 
@@ -438,11 +477,13 @@ Redis增量复制是指Slave初始化后开始正常工作时master发生的写�
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201212114228811.png#pic_center#pic_center)
 
+
 ##### 7.1.3、Redis主从同步策略：
 > 1、`主从刚刚连接的时候，进行全量同步；全同步结束后，进行增量同步`。当然，如果有需要，slave 在任何时候都可以发起全量同步。redis 策略是，无论如何，首先会尝试进行增量同步，如不成功，要求从机进行全量同步。
 > 2、slave在同步master数据时候如果slave丢失连接不用怕，slave在重新连接之后`丢失重补`。
 > 3、一般通过主从来实现读写分离，但是如果master挂掉后如何保证Redis的 HA呢？ 引入`Sentinel`进行master的选择。
 ### 7.2、高可用之哨兵模式
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218105855507.png#pic_center)
 
 [Redis-sentinel](https://www.cnblogs.com/guolianyu/p/10345387.html)  本身是一个**独立**运行的进程，一般sentinel集群 节点数至少三个且奇数个，它能监控多个master-slave集群，sentinel节点发现master宕机后能进行自动切换。Sentinel可以监视任意多个主服务器以及主服务器属下的从服务器，并在被监视的主服务器下线时，**自动执行故障转移操作**。这里需注意` sentinel`也有`single-point-of-failure`问题。大致罗列下哨兵用途：
@@ -453,9 +494,11 @@ Redis增量复制是指Slave初始化后开始正常工作时master发生的写�
 
 ### 7.3、Redis Cluster
 RedisCluster是Redis的分布式解决方案，在3.0版本后推出的方案，有效地解决了Redis分布式的需求。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218105911970.png#pic_center)
 
 ##### 7.3.1、分区规则
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218105947607.png#pic_center)
 
 常见的分区规则
@@ -488,11 +531,14 @@ RedisCluster是Redis的分布式解决方案，在3.0版本后推出的方案，
 缺点：就是zset的数据结构会越来越大。
 ### 2、漏桶算法
 漏桶算法思路：把水比作是请求，漏桶比作是系统处理能力极限，水先进入到漏桶里，漏桶里的水**按一定速率流出**，当流出的速率小于流入的速率时，由于漏桶容量有限，后续进入的水直接溢出（拒绝请求），以此实现限流。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218110047561.png#pic_center)
+
 ### 3、令牌桶算法
 令牌桶算法的原理：可以理解成医院的挂号看病，只有拿到号以后才可以进行诊病。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201218110119377.png#pic_center)
+
 细节流程大致：
 >1、所有的请求在处理之前都需要**拿到一个可用的令牌才会被处理**。
 2、根据限流大小，设置按照一定的速率往桶里添加令牌。
@@ -503,6 +549,7 @@ RedisCluster是Redis的分布式解决方案，在3.0版本后推出的方案，
 工程化：
 >1、[自定义注解、aop、Redis + Lua](https://mp.weixin.qq.com/s/kyFAWH3mVNJvurQDt4vchA) 实现限流。
 >2、推荐 **guava** 的**RateLimiter**实现。
+>3、令牌法可能允许瞬间高并发的小访问量，因为拿到令牌就好。而漏斗法则是永远固定速度的那种。
 
 # 9、常见知识点
 1. 字符串模糊查询时用`Keys`可能导致线程阻塞，尽量用`scan`指令进行无阻塞的取出数据然后去重下即可。

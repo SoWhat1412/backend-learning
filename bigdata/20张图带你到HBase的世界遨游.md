@@ -1,4 +1,4 @@
-﻿![在这里插入图片描述](https://img-blog.csdnimg.cn/20210114105317943.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210114105317943.png)
 # 1 HBase 浅析
 ### 1.1 HBase 是啥
 **HBase** 是一款面向列存储，用于存储处理海量数据的 **NoSQL** 数据库。它的理论原型是 **Google** 的 **BigTable**  论文。你可以认为 **HBase** 是一个高可靠性、高性能、面向列、可伸缩的分布式存储系统，HBase = Hadoop DataBase。
@@ -191,10 +191,14 @@ HBase 在实现中提供了两种缓存结构 MemStore(写缓存) 和 [BlockCach
 > HBase 把磁盘跟内存数据一起读，然后把磁盘数据放到BlockCache中，BlockCache是磁盘数据的缓存。HBase 是个读比写慢的工具。
 ### 4.3 HBase 为什么写比读快
 1. HBase 能提供实时计算服务主要原因是由其架构和底层的数据结构决定的，即由**LSM-Tree**(Log-Structured Merge-Tree) + **HTable**(Region分区) + **Cache**决定的。
+
 2. HBase 写入速度快是因为数据并不是真的立即落盘，而是先写入内存，随后异步刷入HFile。所以在客户端看来，写入速度很快。
+
 3. HBase 存储到内存中的数据是有序的，内存数据刷写到HFile时也是有序的。并且多个有序的HFile还会进行**归并排序**生成更大的有序HFile。性能测试发现顺序读写磁盘速度比随机读写磁盘快至少三个数量级！
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210113165838643.png)
+
+  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210113165838643.png)   
 4. 读取速度快是因为它使用了**LSM**树型结构，因为磁盘寻址耗时远远大于磁盘顺序读取的时间，HBase的架构设计导致我们可以将磁盘寻址次数控制在性能允许范围内。
+
 5. [LSM](https://www.zhihu.com/question/19887265) 树原理把一棵大树拆分成N棵小树，它首先写入内存中，随着小树越来越大，内存中的小树会flush到磁盘中，磁盘中的树定期可以做merge操作来合并成一棵大树，以优化读性能。
 
 ##### 4.3.1查询举例
@@ -257,7 +261,8 @@ HBase中有几个内容会动态调整，如Region（分区）、HFile。通过�
 数据库事务机制就是为了更好地实现批量写入，较少数据库的开启关闭带来的开销，那么HBase中也存在频繁开启关闭带来的问题。
 1. 关闭 Compaction。
 >HBase 中自动化的Minor Compaction和Major Compaction会带来极大的I/O开销，为了避免这种不受控制的意外发生，建议关闭自动Compaction，在闲时进行compaction。
-##### 6.3.3  减少数据量
+>
+>##### 6.3.3  减少数据量
 1. 开启过滤，提高查询速度
 >开启BloomFilter，BloomFilter是列族级别的过滤，在生成一个StoreFile同时会生成一个MetaBlock，用于查询时过滤数据
 2. 使用压缩

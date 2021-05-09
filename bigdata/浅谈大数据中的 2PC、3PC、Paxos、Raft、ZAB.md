@@ -477,7 +477,7 @@ ZAB为解决脑裂问题，要求集群内的节点数量为2N+1, 当网络分�
 
 [李凯讲Paxos](https://chuansongme.com/n/2189245)
 
-[不错的Paxos讲解]([](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zNC41MWN0by5jb20vaW1hZ2VzL2Jsb2cvMjAxODAzLzEzL2JlY2ZlMTg5NzUxNTliZDE3YjZhMmQ5MThiN2QzOWQ4LnBuZw?x-oss-process=image/format,png))
+[不错的Paxos讲解](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zNC41MWN0by5jb20vaW1hZ2VzL2Jsb2cvMjAxODAzLzEzL2JlY2ZlMTg5NzUxNTliZDE3YjZhMmQ5MThiN2QzOWQ4LnBuZw?x-oss-process=image/format,png)
 
 [小灰浅谈](https://blog.csdn.net/bjweimengshu/article/details/86698036)
 

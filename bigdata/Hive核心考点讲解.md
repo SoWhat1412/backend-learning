@@ -1,4 +1,4 @@
-﻿
+
 # 1 Hive
 Hive 是 FaceBook 开源的一款基于 Hadoop 数据仓库工具，它可以将结构化的数据文件映射为一张表，并提供类SQL查询功能。
 >The Apache Hive ™ data warehouse software facilitates reading, writing, and managing large datasets residing in distributed storage using SQL 。
@@ -36,7 +36,9 @@ Hive 采用了类SQL 的查询语言 HQL(Hive Query Language)，因此很容易�
 
 ### 1.3 Hive 底层
 Hive 底层是 MapReduce 计算框架，Hive 只是将通读性强且容易编程的SQL语句通过 Hive 软件转换成MapReduce 程序在集群上执行，Hive 可以看做 MapReduce 客户端。操作的数据还是存储在HDFS上的，而用户定义的表结构等元信息被存储到 MySQL 上了。以前要写八股文 MapReduce 程序，现在只需要HQL查询就可！
+
 ![Hive整体框架](https://img-blog.csdnimg.cn/20210118195922405.png)
+
 1. 用户接口 Client
 >CLI（hive shell）、JDBC/ODBC(java访问hive)、WEBUI（浏览器访问hive）
 2. 元数据 Metastore
@@ -431,3 +433,7 @@ Hive不支持直接使用 DROP TABLE 语句删除索引表。如果创建索引�
 
 ![源网侵删](https://img-blog.csdnimg.cn/20210119145404131.png)
 公众号：sowhat1412 回复 hive 获取。
+
+# 参考
+
+- B站：https://www.bilibili.com/video/BV1pz4y167NZ

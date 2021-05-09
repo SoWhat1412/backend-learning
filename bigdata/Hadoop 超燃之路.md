@@ -1,4 +1,4 @@
-﻿# 1  Hadoop 简介
+# 1  Hadoop 简介
 ### 1.1 Hadoop 由来
 ![数据容量](https://img-blog.csdnimg.cn/20210114202727804.png)
 大数据时代数据量超级大，数据具有如下特性：
@@ -110,7 +110,9 @@ DataNode简称DN 就是HDFS集群中的Slave，NameNode负责下达命令，Data
 
 上面说过数据目录信息存储在NN中，而具体信息存储在DN中，很形象的比喻如下
 ![NN跟DN对比](https://img-blog.csdnimg.cn/20210115144958622.png)
+
 **DataNode 的工作机制**
+
 1. 数据块存储在磁盘信息 包括 数据 + 数据长度 + 校验和 + 时间戳。
 2. DataNode 启动后向 NameNode注册，周期性（1小时）的向 NameNode 上报所有的块信息。
 3. NN 跟 DN 之间 心跳 3秒一次，心跳返回结果带有 NameNode 给该 DataNode 的命令如复制块数据到另一台机器，或删除某个数据块。如果超过10分钟没有收到某个 DataNode 的心跳，则认为该节点不可用。
@@ -283,15 +285,15 @@ MapReduce是个**分布式运算程序的编程框架**，是基于 Hadoop 的 �
 因为 Hadoop 在集群之间进行通讯或者 RPC 调用时是需要序列化的，而且要求序列化要快、且体积要小、占用带宽要小。而Java自带的序列化是重量级框架，对象序列化后会附带额外信息，比如各种校验信息，header，继承体系等。所以 Hadoop `自研`了序列化框架。
 | Java类型 |Hadoop Writable类型  |
 |--|--|
-| boolean| 	BooleanWritable| 
-| byte| 	ByteWritable| 
-| int| 	IntWritable| 
-| float| 	FloatWritable| 
-| long	| LongWritable| 
-| double| 	DoubleWritable| 
-| String	| Text| 
-| map| 	MapWritable| 
-| array	| ArrayWritable| 
+| boolean| 	BooleanWritable|
+| byte| 	ByteWritable|
+| int| 	IntWritable|
+| float| 	FloatWritable|
+| long	| LongWritable|
+| double| 	DoubleWritable|
+| String	| Text|
+| map| 	MapWritable|
+| array	| ArrayWritable|
 
 ### 3.3 MapTask 并行度
 **数据块**：Block 是 HDFS 物理上把数据分成一块一块。
@@ -392,7 +394,9 @@ MR任务输入文件个数各有不同，针对不同类型MR定义了一个接�
 
 ##### 3.6.2 Shuffle 
 ![Shuffle机制](https://img-blog.csdnimg.cn/20210116190335558.png)
- MapReduce 的核心就是  Shuffle 过程，Shuffle 过程是贯穿于 map 和 reduce 两个过程的！ 在Map端包括Spill过程，在Reduce端包括copy和sort过程。  具体Shuffle过程如下：
+
+MapReduce 的核心就是  Shuffle 过程，Shuffle 过程是贯穿于 map 和 reduce 两个过程的！ 在Map端包括Spill过程，在Reduce端包括copy和sort过程。  具体Shuffle过程如下：
+
 1. MapTask 收集我们的map()方法输出的kv对，放到内存缓冲区中。
 2. 从内存缓冲区不断溢出本地磁盘文件，可能会溢出多个文件，溢出前会按照分区针对key进行区内快排。
 3. 多个溢出文件会被合并成大的溢出文件。

@@ -13,6 +13,7 @@
 **HBase** 并不是足够快，只是数据量很大的时候慢的不明显。HBase主要用在以下两种情况：
 > 1. 单表数据量超过千万，而且并发量很大。
 >2. 数据分析需求较弱，或者不需要那么实时灵活。
+
 ### 1.2 HBase 的由来
 我们知道 [Mysql](https://mp.weixin.qq.com/s/O_NHjv_YVUi4lSqXnhx5Mg) 是一个关系型数据库，学数据库的时第一个接触的就是[MySQL](https://mp.weixin.qq.com/s/O_NHjv_YVUi4lSqXnhx5Mg)了。但是[MySQL](https://mp.weixin.qq.com/s/O_NHjv_YVUi4lSqXnhx5Mg)的性能瓶颈是很大的，一般单个table行数不宜超过500万行，大小不宜超过2G。
 
@@ -238,6 +239,7 @@ HBase 在实现中提供了两种缓存结构 MemStore(写缓存) 和 [BlockCach
 5. [LSM](https://www.zhihu.com/question/19887265) 树原理把一棵大树拆分成N棵小树，它首先写入内存中，随着小树越来越大，内存中的小树会flush到磁盘中，磁盘中的树定期可以做merge操作来合并成一棵大树，以优化读性能。
 
 ##### 4.3.1查询举例
+
 1. 根据RowKey能快速找到行所在的Region，假设有10亿条记录，占空间1TB。 分列成了500个Region，那读取2G的记录，就能找到对应记录。
 2. 数据是按照列族存储的，假设分为3个列族，每个列族就是666M， 如果要查询的东西在其中1个列族上，1个列族包含1个或者多个 HStoreFile，假设一个HStoreFile是128M， 该列族包含5个HStoreFile在磁盘上. 剩下的在内存中。
 3. 内存跟磁盘中数据是排好序的，你要的记录有可能在最前面，也有可能在最后面，假设在中间，我们只需遍历2.5个HStoreFile共300M。
@@ -245,7 +247,9 @@ HBase 在实现中提供了两种缓存结构 MemStore(写缓存) 和 [BlockCach
 5. 大致理解读写思路后你会发现如果你在读写时设计的足够巧妙当然读写速度快的很咯。
 
 # 5 HBase Flush 
+
 ### 5.1 Flush
+
 对于用户来说数据写到 MemStore 中就算OK，但对于底层代码来说只有数据刷到硬盘中才算彻底搞定了！因为数据是要写入到WAL(Hlog)中再写入到MemStore中的，flush有如下几个时机。
 1. 当 WAL 文件的数量超过设定值时 Region 会按照时间顺序依次进行刷写，直到 WAL 文件数量小于设定值。
 2. 当Region Server 中 MemStore 的总大小达到堆内存40%时，Region 会按照其所有 MemStore 的大小顺序（由大到小）依次进行阻塞刷写。直到Region Server中所有 MemStore 的总大小减小到上述值以下。当阻塞刷写到上个参数的0.95倍时，客户端可以继续写。
@@ -261,6 +265,7 @@ Compaction 分为两种，分别是 **Minor Compaction** 和 **Major Compaction*
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210113202159910.png)
 
 ### 5.3 Region Split
+
 每个 Table 起初只有一个 Region，随着不断写数据 Region 会自动进行拆分。刚拆分时，两个子 Region 都位于当前的 Region Server，但出于负载均衡的考虑， HMaster 有可能会将某个 Region 转移给其他的 Region Server。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210113203813299.png)
@@ -343,5 +348,7 @@ BulkLoad 适合初次数据导入，以及HBase与Hadoop为同一集群。BulkLo
 
 # 7 参考
 > BlockCache讲解：https://blog.51cto.com/12445535/2363376?source=dra
+
 > LSM 原理：https://www.zhihu.com/question/19887265
+
 > HBase教程：http://c.biancheng.net/view/6499.html

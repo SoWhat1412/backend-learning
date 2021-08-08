@@ -40,7 +40,7 @@
 
 ### Java
 
-1. [MyBatis极速入门](https://github.com/SoWhat1412/backend-learning/blob/master/java/MyBatis极速入门.md)
+1. [MyBatis极速入门](https://github.com/SoWhat1412/backend-learning/blob/master/java/MyBatisPlus%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8.md)
 2. [MyBatisPlus极速入门](https://github.com/SoWhat1412/backend-learning/blob/master/java/MyBatisPlus极速入门.md)
 3. [八个Dubbo经典知识点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489782&amp;idx=1&amp;sn=efbe773e62b12ad291d7801e3affc014&amp;chksm=ebdef9cedca970d883a03a790a6ab2f50324d5e4a9068c320cf9f4940014ef7f991052d14286&token=940508138&lang=zh_CN#rd)
 4. [关于Spring面试官就问这13个问题](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489703&amp;idx=1&amp;sn=a91ae04efcb7b5693a21de1045335a0f&amp;chksm=ebdef99fdca9708939d00fa08df20b1925123a0ecbb875279075560df0321b4393fa3bb993ca&token=940508138&lang=zh_CN#rd)

@@ -25,16 +25,16 @@
 
 ### JUC
 
-1. [JAVA并发十二连招，你能接住吗？](https://github.com/SoWhat1412/backend-learning/blob/master/juc/JAVA并发十二连招，你能接住吗？.md)
+1. [JAVA并发十二连招，你能接住吗？](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489439&amp;idx=1&amp;sn=df404e70a8e55b4019317ef2036fbe7d&amp;chksm=ebdef6a7dca97fb1e1a0dfd2eab194fa87f4971cd6b88645db072bcc9c98614b0ad30dc43399&token=940508138&lang=zh_CN#rd)
 2. [10分钟学会线程池](https://github.com/SoWhat1412/backend-learning/blob/master/juc/10分钟学会线程池.md)
-3. [CAS、Lock、读写锁](https://github.com/SoWhat1412/backend-learning/blob/master/juc/CAS、Lock、读写锁.md)
+3. [CAS、Lock、读写锁](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247488426&amp;idx=1&amp;sn=705cace6ce7fbc2d6f141e8b03623fff&amp;chksm=ebdef292dca97b840f0ba8ac900160f1b98f2a4ebb55d1757585a2731710b8bb43944887c2a3&token=940508138&lang=zh_CN#rd)
 4. [ThreadLocal由浅入深说](https://github.com/SoWhat1412/backend-learning/blob/master/juc/ThreadLocal由浅入深说.md)
-5. [一文搞懂volatile 由浅入深，直击痛点](https://github.com/SoWhat1412/backend-learning/blob/master/juc/一文搞懂volatile 由浅入深，直击痛点.md)
-6. [千呼万唤始出来：JUC灵魂AQS终于来了](https://github.com/SoWhat1412/backend-learning/blob/master/juc/千呼万唤始出来：JUC灵魂AQS终于来了.md)
-7. [常见并发容器](https://github.com/SoWhat1412/backend-learning/blob/master/juc/常见并发容器.md)
+5. [一文搞懂volatile 由浅入深，直击痛点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247485656&amp;idx=1&amp;sn=03c2eedc1f749e719230cfa87952c51c&amp;chksm=ebdee9e0dca960f6f2ca21c76b044ae25790770014a140ba063cfdd6c0dde156eca1f053bc1c&token=940508138&lang=zh_CN#rd)
+6. [千呼万唤始出来：JUC灵魂AQS终于来了](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489331&amp;idx=1&amp;sn=89e47f0f93ddf3e1089ab11a2b42ce20&amp;chksm=ebdef60bdca97f1dc3cb431832055e41c658703c9e354dd95c543fbe5c5a9230732a78210db8&token=940508138&lang=zh_CN#rd)
+7. [常见并发容器](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247488541&amp;idx=1&amp;sn=442f57533fcd9a9d9241ef955fd6301f&amp;chksm=ebdef525dca97c33db030f46cde0ed9a4f0a4fa56455916eb0c42c4c42ea238b88744999c658&token=940508138&lang=zh_CN#rd)
 8. [由浅入深逐步讲解synchronized](https://github.com/SoWhat1412/backend-learning/blob/master/juc/由浅入深逐步讲解synchronized.md)
-9. [让ConcurrentHashMap成为你的面试加分点](https://github.com/SoWhat1412/backend-learning/blob/master/juc/让ConcurrentHashMap成为你的面试加分点.md)
-10. [说点JMM 让你的面试锦上添花](https://github.com/SoWhat1412/backend-learning/blob/master/juc/说点JMM 让你的面试锦上添花.md)
+9. [让ConcurrentHashMap成为你的面试加分点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247487563&amp;idx=1&amp;sn=0a223ae2bba963e3ac40b7ce6d9ecd56&amp;chksm=ebdef173dca9786555ec9f5b3c9dd4f2fe125e778deba8bfd9a60b7821149480ddcb956c7d12&token=940508138&lang=zh_CN#rd)
+10. [说点JMM让你的面试锦上添花](https://github.com/SoWhat1412/backend-learning/blob/master/juc/说点JMM让你的面试锦上添花.md)
 11. [面试HashMap看这篇就够了](https://github.com/SoWhat1412/backend-learning/blob/master/juc/面试HashMap看这篇就够了.md)
 12. [线程安全与性能的思考](https://github.com/SoWhat1412/backend-learning/blob/master/juc/线程安全与性能的思考.md)
 
@@ -45,8 +45,8 @@
 3. [八个Dubbo经典知识点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489782&amp;idx=1&amp;sn=efbe773e62b12ad291d7801e3affc014&amp;chksm=ebdef9cedca970d883a03a790a6ab2f50324d5e4a9068c320cf9f4940014ef7f991052d14286&token=940508138&lang=zh_CN#rd)
 4. [关于Spring面试官就问这13个问题](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489703&amp;idx=1&amp;sn=a91ae04efcb7b5693a21de1045335a0f&amp;chksm=ebdef99fdca9708939d00fa08df20b1925123a0ecbb875279075560df0321b4393fa3bb993ca&token=940508138&lang=zh_CN#rd)
 5. [大吉大利 ：空投十个JVM核心知识点，速度捡包](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489183&amp;idx=1&amp;sn=02ab3551c473bd2c8429862e3689a94b&amp;chksm=ebdef7a7dca97eb17194c3d935c86ade240d3d96bbeaf036233a712832fb94af07adeafa098b&token=940508138&lang=zh_CN#rd)
-
-
+6. [关于Java拷贝你能说个123么](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247488259&amp;idx=1&amp;sn=7f91afe154091ce553c6a979fd8e8055&amp;chksm=ebdef23bdca97b2dbcfc5fb9884edb28b2f04c2f2acdb661769eee15ea2c25505f5b8874dd4c&token=940508138&lang=zh_CN#rd)
+7. [慎入！3W字带你玩转SpringCloud](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247487072&amp;idx=1&amp;sn=3010908c4b668edef8fbd1f320343354&amp;chksm=ebdeef58dca9664e76a2b62907ee79aa8fd0fab458b5ff4ed8cd052ab3268bd0c3c17978fd00&token=940508138&lang=zh_CN#rd)
 
 ### Interview
 
@@ -55,24 +55,24 @@
 3. [如何实现丝滑般数据库扩容](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247493389&amp;idx=1&amp;sn=4f3c776d3d5113a8caa1eb6019692f1e&amp;chksm=ebdd0635dcaa8f2308cd33190f0a27f1295e8d2ab2430235c348e5aa39e74ede99fb63223588&token=940508138&lang=zh_CN#rd)
 
 
-### DataBaseßßß
+### DataBase
 
-1. [Redis GeoHash核心原理解析](https://github.com/SoWhat1412/backend-learning/blob/master/database/Redis GeoHash核心原理解析.md)
+1. [Redis GeoHash核心原理解析](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247485957&amp;idx=2&amp;sn=a5a75f2f9053cfd40df2d0d7a16389ef&amp;chksm=ebdeeb3ddca9622b18ecbc31993d1958d7017fa40abd57669b2a4eef47349541332730d9acf5&token=940508138&lang=zh_CN#rd)
 2. [丝滑般的数据库扩容方案](https://github.com/SoWhat1412/backend-learning/blob/master/database/丝滑般的数据库扩容方案.md)
-3. [从应用到底层 36张图带你进入Redis世界](https://github.com/SoWhat1412/backend-learning/blob/master/database/从应用到底层 36张图带你进入Redis世界.md)
+3. [从应用到底层36张图带你进入Redis世界](https://github.com/SoWhat1412/backend-learning/blob/master/database/从应用到底层36张图带你进入Redis世界.md)
 4. [数据库跟缓存的双写一致性问题](https://github.com/SoWhat1412/backend-learning/blob/master/database/数据库跟缓存的双写一致性问题.md)
-5. [顺丰快递 _ 请收下 MySQL 灵魂十连](https://github.com/SoWhat1412/backend-learning/blob/master/database/顺丰快递 _ 请收下 MySQL 灵魂十连.md)
+5. [顺丰快递 _ 请收下 MySQL 灵魂十连](https://github.com/SoWhat1412/backend-learning/blob/master/database/顺丰快递:请收下MySQL灵魂十连.md)
 
 ### BigData
 
 1. [20张图带你到HBase的世界遨游](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247490034&amp;idx=1&amp;sn=b8624b8d13de9aacd2b69891b5a62379&amp;chksm=ebdef8cadca971dc95f07681a3be03281e0b9350595e38713944ec32159979995eaf9dd5cae2&token=940508138&lang=zh_CN#rd)
 2. [Hadoop 超燃之路](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247490316&amp;idx=1&amp;sn=1fc31b36b525f92c368dad6fbbf56434&amp;chksm=ebdefa34dca9732268c2a1600161e6ea07667f9b3bbccfb02648c89cae3df1c0b00e7732cc24&token=940508138&lang=zh_CN#rd)
 3. [Hive核心考点讲解](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247493295&amp;idx=1&amp;sn=17891a675e549b91f96ed2e6402c9ffa&amp;chksm=ebdd0797dcaa8e81477e51e01f9ddd43d229c8fe790fec12fc70757128100b2c8e87f838e479&token=940508138&lang=zh_CN#rd)
-4. [RabbitMQ极速入门](https://github.com/SoWhat1412/backend-learning/blob/master/bigdata/RabbitMQ极速入门.md)
+4. [RabbitMQ极速入门](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247488121&amp;idx=1&amp;sn=1ca9adc665b9ba0fc68c2d647b967d7c&amp;chksm=ebdef341dca97a574894f521117e4164dec966d1ed673aeecf013638e539ba413a6ed012fd11&token=940508138&lang=zh_CN#rd)
 5. [RabbitMQ 高频考点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247490325&amp;idx=1&amp;sn=ab7cfedc7b8f2361cc1fab9418b314b8&amp;chksm=ebdefa2ddca9733b76cffbcba2d5f8c0c61bd36d5ebba20aaecb07148aa0fd7a5781e16ab03e&token=940508138&lang=zh_CN#rd)
 6. [ZooKeeper：只有五个核心知识点](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247489891&amp;idx=1&amp;sn=eb7b6a4d4f2560df31eb41e10dc66264&amp;chksm=ebdef85bdca9714d89dcd84894ce8c3af4c2ad5bab43760adfa30384fe7345c6d93fe55b47d5&token=940508138&lang=zh_CN#rd)
 7. [六问 Kafka 为啥那么牛!](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247490360&amp;idx=1&amp;sn=0afe340abdd7cdaae428740c4c57074f&amp;chksm=ebdefa00dca973163b24a9942b8e69ee0d76f96782d661036dbbf135297cef83ac43151e617d&token=940508138&lang=zh_CN#rd)
-8. [浅谈大数据中的 2PC、3PC、Paxos、Raft、ZAB](https://github.com/SoWhat1412/backend-learning/blob/master/bigdata/浅谈大数据中的 2PC、3PC、Paxos、Raft、ZAB.md)
+8. [浅谈大数据中的 2PC、3PC、Paxos、Raft、ZAB](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247485515&amp;idx=1&amp;sn=60763ddda77928943bfd3d57e0c9256e&amp;chksm=ebdee973dca9606535b5bc8f3ee4ab4b8d3ae4167ba3aa523514cd9f092710e183d0f259ccf5&token=940508138&lang=zh_CN#rd)
 
 
 
@@ -87,7 +87,7 @@
 1. [30个IDEA插件，总有一款适合你！！！](https://github.com/SoWhat1412/backend-learning/blob/master/tools/30个IDEA插件，总有一款适合你！！！.md)
 2. [9种分布式ID生成方式，总有一款适合你](https://github.com/SoWhat1412/backend-learning/blob/master/tools/9种分布式ID生成方式，总有一款适合你.md)
 3. [公众号：降龙十八掌](https://github.com/SoWhat1412/backend-learning/blob/master/tools/公众号：降龙十八掌.md)
-4. [装完B就跑，这几个Linux指令真的Diǎo](https://github.com/SoWhat1412/backend-learning/blob/master/tools/装完B就跑，这几个Linux指令真的Diǎo.md)
-5. [面试官留步，让我给你侃下 Docker 运行原理](https://github.com/SoWhat1412/backend-learning/blob/master/tools/面试官留步，让我给你侃下 Docker 运行原理.md)
-6. [通过分析周榜前100名专家的博客文章 手把手教你写出爆款文章](https://github.com/SoWhat1412/backend-learning/blob/master/tools/通过分析周榜前100名专家的博客文章 手把手教你写出爆款文章.md)
+4. [装完B就跑，这几个Linux指令真的Diǎo](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247488218&amp;idx=1&amp;sn=f098db75735019ad02bafa1cdfe456c6&amp;chksm=ebdef3e2dca97af44043d9c6d1485b96d1e8f2d22411be65465b21e169bbe90836aaca6f2aa2&token=940508138&lang=zh_CN#rd)
+5. [面试官留步，让我给你侃下Docker运行原理](https://github.com/SoWhat1412/backend-learning/blob/master/tools/面试官留步，让我给你侃下Docker运行原理.md)
+6. [通过分析周榜前100名专家的博客文章 手把手教你写出爆款文章](https://github.com/SoWhat1412/backend-learning/blob/master/tools/通过分析周榜前100名专家的博客文章:手把手教你写出爆款文章.md)
 

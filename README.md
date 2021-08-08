@@ -81,6 +81,7 @@
 1. [字符串匹配由浅入深讲](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247492810&amp;idx=1&amp;sn=0906ff76543fbd92e3365805ea9b20b6&amp;chksm=ebdd05f2dcaa8ce4333ea284a8afd1af29ea196184a569b2e2237a0432465acd0a6d49d2fbd7&token=940508138&lang=zh_CN#rd)
 2. [快速搞定并查集](https://github.com/SoWhat1412/backend-learning/blob/master/algorithm/快速搞定并查集.md)
 3. [红黑树硬核增删讲解](https://mp.weixin.qq.com/s?__biz=MzI4NjI1OTI4Nw==&amp;mid=2247492510&amp;idx=1&amp;sn=e949fee40cc220c14671c3374681753b&amp;chksm=ebdd02a6dcaa8bb0e3cfdd7942c4c1dce007685def769d5bbf8c3cc504e1726a6a2f59f87ed9&token=940508138&lang=zh_CN#rd)
+4. [算法大佬：袁厨的算法小屋](https://github.com/chefyuan/algorithm-base)
 
 ### tools
 
